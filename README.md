@@ -11,3 +11,6 @@ This is basically a digital bulletin board for the college. Students and clubs c
 frontend-react
 backend-node(express)
 database-mongodb
+
+## Progess
+some more backend, frontend, dockerization and deployment left💀💀
