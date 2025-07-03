@@ -6,7 +6,7 @@ import "./styles.css";
 import logo from "./assets/image.png";
 
 function App() {
-  // Simple initialization without arrow functions
+  
   let initialPage = "login";
   const token = localStorage.getItem("token");
   if (token) {

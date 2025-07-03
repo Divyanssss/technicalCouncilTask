@@ -8,7 +8,6 @@ function Events(props) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Check if user is logged in
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -28,15 +27,12 @@ function Events(props) {
   return (
     <div style={{ position: 'relative', minHeight: '80vh' }}>
       <h2 className="form-title">Events</h2>
-      
       {loading && <div style={{ color: '#388e3c', marginBottom: '16px' }}>Loading...</div>}
       {error && <div className="error">{error}</div>}
       {events.length === 0 && !loading && <div>No events yet.</div>}
       {events.map(event => (
         <EventCard key={event._id} event={event} />
       ))}
-      
-      {/* Small Post Event button at bottom right */}
       <button 
         onClick={props.onCreateEvent} 
         style={{ 

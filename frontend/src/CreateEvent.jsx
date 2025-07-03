@@ -3,13 +3,13 @@ import axios from "axios";
 import "./styles.css";
 
 function CreateEvent(props) {
-  // Simple user initialization
+  
   let user = {};
   if (props.user) {
     user = props.user;
   }
   
-  // Simple form initialization
+  
   let initialName = "";
   if (user.name) {
     initialName = user.name;
@@ -57,13 +57,13 @@ function CreateEvent(props) {
   function handleImageChange(e) {
     const file = e.target.files[0];
     if (file) {
-      // Check file size (max 5MB)
+   
       if (file.size > 5 * 1024 * 1024) {
         setError("Image size should be less than 5MB");
         return;
       }
       
-      // Check file type
+     
       if (!file.type.startsWith('image/')) {
         setError("Please select a valid image file");
         return;
@@ -91,16 +91,16 @@ function CreateEvent(props) {
     setSuccess("");
     try {
       const token = localStorage.getItem("token");
-      // Convert DD-MM-YYYY to YYYY-MM-DD for backend
+
       let eventDateForBackend = form.eventDate;
       if (eventDateForBackend && eventDateForBackend.includes('-')) {
         const parts = eventDateForBackend.split('-');
         if (parts.length === 3) {
-          // If user entered DD-MM-YYYY, convert to YYYY-MM-DD
+       
           eventDateForBackend = `${parts[2]}-${parts[1]}-${parts[0]}`;
         }
       }
-      // Prepare payload as backend expects
+    
       const payload = {
         title: form.title,
         description: form.description,
@@ -131,7 +131,6 @@ function CreateEvent(props) {
       );
       setSuccess("Event created!");
       
-      // Reset form with simple initialization
       let resetName = "";
       if (user.name) {
         resetName = user.name;

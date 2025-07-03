@@ -31,13 +31,13 @@ function Login(props) {
       try {
         const res = await axios.post("/users/signin", { email: form.email, password: form.password });
         localStorage.setItem("token", res.data.token);
-        // Fetch user info after login
+        
         let userInfo = { email: form.email, name: "" };
         try {
           const userRes = await axios.get(`/users/me`, { headers: { Authorization: res.data.token } });
           userInfo = userRes.data;
         } catch (e) {
-          // fallback: use email only
+  
         }
         props.onLogin(userInfo);
       } catch (err) {
@@ -50,7 +50,6 @@ function Login(props) {
     }
   }
 
-  // Simple title and button text
   let titleText = "Login";
   if (isSignup) {
     titleText = "Signup";

@@ -11,15 +11,15 @@ function formatDate(dateString) {
 }
 
 function EventCard({ event }) {
-  // Format date as DD-MM-YYYY
+
   let dateText = formatDate(event.eventDate);
   
-  // Add time if available
+
   if (event.eventTime) {
     dateText = dateText + " at " + event.eventTime;
   }
   
-  // Simple name and email display
+ 
   let postedByText = "Unknown";
   if (event.postedBy && event.postedBy.name && event.postedBy.email) {
     postedByText = event.postedBy.name + " (" + event.postedBy.email + ")";
