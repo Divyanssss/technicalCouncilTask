@@ -43,7 +43,7 @@ To run the app using Docker and Docker Compose:
    ```
 2. **Build and start the containers:**
    ```sh
-   docker-compose up --build
+   docker-compose up -d
    ```
 3. **Access the app:**
    - Open [http://localhost:5000](http://localhost:5000) in your browser.
