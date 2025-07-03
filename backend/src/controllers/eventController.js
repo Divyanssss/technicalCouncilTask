@@ -1,79 +1,99 @@
-import Event from '../models/eventModel.js';
+import Event from "../models/eventModel.js";
 
 // get all events
-export const getAllEvents = async (req, res) => {
+export const getEvents = async (req, res) => {
   try {
-    const events = await Event.find().sort({ eventDate: 1 });
-    res.json({ success: true, data: events });
+    const events = await Event.find({})
+      .sort({ eventDate: 1 });
+
+    res.json(events);
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
-
-
 
 // get single event
 export const getEventById = async (req, res) => {
   try {
-    const event = await Event.findById(req.params.id);
-    if (!event) {
-      return res.status(404).json({ success: false, message: 'Event not found' });
+    const event = await Event.findById(req.params.id).populate(
+      "createdBy",
+      "name email"
+    );
+
+    if (event) {
+      res.json(event);
+    } else {
+      res.status(404).json({ message: "Event not found" });
     }
-    res.json({ success: true, data: event });
-  } 
-  
-  
-  catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
 // create new event
 export const createEvent = async (req, res) => {
   try {
-   
-    const event = new Event(req.body);
-   
-   
-    await event.save();
-    res.status(201).json({ success: true, message: 'Event created successfully', data: event });
-  } 
-  
-  catch (error) {
-    res.status(400).json({ success: false, error: error.message });
+    const { title, description, eventDate, eventTime, location, category, image, postedBy, contactInfo } = req.body;
+
+    const event = await Event.create({
+      title,
+      description,
+      eventDate,
+      eventTime,
+      location,
+      category,
+      image,
+      postedBy,
+      contactInfo
+    });
+
+    res.status(201).json(event);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
 // update event
 export const updateEvent = async (req, res) => {
   try {
-    const event = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const event = await Event.findById(req.params.id);
+
     if (!event) {
-
-
-      return res.status(404).json({ success: false, message: 'Event not found' });
+      return res.status(404).json({ message: "Event not found" });
     }
-    res.json({ success: true, message: 'Event updated successfully', data: event });
-  } 
-  
-  
-  catch (error) {
-    res.status(400).json({ success: false, error: error.message });
+
+    if (event.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    const updatedEvent = await Event.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    res.json(updatedEvent);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
 // delete event
 export const deleteEvent = async (req, res) => {
   try {
-    const event = await Event.findByIdAndDelete(req.params.id);
-
+    const event = await Event.findById(req.params.id);
 
     if (!event) {
-      return res.status(404).json({ success: false, message: 'Event not found' });
+      return res.status(404).json({ message: "Event not found" });
     }
-    res.json({ success: true, message: 'Event deleted successfully' });
-  } 
-  catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+
+    if (event.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    await Event.findByIdAndDelete(req.params.id);
+    res.json({ message: "Event removed" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-}; 
+};
