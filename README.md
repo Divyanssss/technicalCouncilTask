@@ -38,7 +38,7 @@ To run the app using Docker and Docker Compose:
 
 1. **Clone the repository:**
    ```sh
-   git clone <your-repo-url>
+   git clone https://github.com/Divyanssss/technicalCouncilTask
    cd technicalcouncil
    ```
 2. **Build and start the containers:**
